@@ -1,0 +1,29 @@
+Bug report and resolution for confest.py
+
+The original browser-automation issues have been addressed by switching to
+Google's Custom Search JSON API:
+
+1. Incorrect search-field locator
+   The browser locator has been removed. The script sends the search query
+   directly to the API instead of locating Google's interactive search box.
+
+2. Fixed sleep and page-load timing
+   Browser sleeps and page waits are no longer needed. The API request uses a
+   finite network timeout.
+
+3. Browser window/session cleanup
+   Selenium and Chrome are no longer used, so there is no browser session to
+   clean up.
+
+4. Cleanup skipped after an earlier failure
+   The browser resource no longer exists. The API response is read inside a
+   context manager, which closes the response after use.
+
+Configuration required:
+- Set GOOGLE_API_KEY to the existing Google API key.
+- Set GOOGLE_CSE_ID to the ID of the configured Programmable Search Engine.
+- Do not put credentials directly into the source file or commit them.
+
+The script reports missing configuration, network failures, timeouts, and
+HTTP API errors explicitly. Google API access must be enabled for the account
+and search engine; API quotas and Google's service availability still apply.
